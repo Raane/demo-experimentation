@@ -19,13 +19,6 @@
   },
   {
     "id": "intro",
-    "type": "IntroNode",
-    "connected": {
-      "percolator": "percolator.percolator"
-    }
-  },
-  {
-    "id": "percolator",
-    "type": "PercolatorThrobNode"
+    "type": "IntroNode"
   }
 ]
