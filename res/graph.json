@@ -10,11 +10,22 @@
     "id": "sceneSwitcherNode",
     "type": "SceneSwitcherNode",
     "connected": {
-      "A": "SpinningCube.render"
+      "A": "intro.render"
     }
   },
   {
     "id": "SpinningCube",
     "type": "spinningCube"
+  },
+  {
+    "id": "intro",
+    "type": "IntroNode",
+    "connected": {
+      "percolator": "percolator.percolator"
+    }
+  },
+  {
+    "id": "percolator",
+    "type": "PercolatorThrobNode"
   }
 ]
