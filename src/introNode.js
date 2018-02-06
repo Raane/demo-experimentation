@@ -14,8 +14,8 @@
       this.output.minFilter = THREE.LinearFilter;
       this.output.magFilter = THREE.LinearFilter;
 
-      this.dots_per_level = 10;
-      this.dots = 168;
+      this.dots_per_level = 20;
+      this.dots = 268;
     }
 
     resize() {
@@ -26,7 +26,7 @@
 
     update(frame) {
       this.frame = frame;
-      this.dots = (frame) % 70;
+      this.dots = (frame) % 200 ;
     }
 
     renderShape(ctx, shape) {
@@ -61,13 +61,15 @@
         }
       }*/
 
-      var draw_branch = function(x, y, dots_remaining, dots_per_level, angle, ctx) {
+      var draw_branch = function(x, y, dots_remaining, dots_per_level, angle, level, ctx) {
+        var dx = 1.5 * Math.sin(angle) * (12 - level) / 12;
+        var dy = 1.5 * Math.cos(angle) * (12 - level) / 12;
         if (dots_remaining > dots_per_level) 
         {
-          draw_branch(x + Math.sin(angle), y + Math.cos(angle), dots_remaining - dots_per_level, dots_per_level, angle - 0.35, ctx);
-          draw_branch(x + Math.sin(angle), y + Math.cos(angle), dots_remaining - dots_per_level, dots_per_level, angle + 0.35, ctx);
+          draw_branch(x + dx, y + dy, dots_remaining - dots_per_level, dots_per_level, angle - 0.65, level + 1, ctx);
+          draw_branch(x + dx, y + dy, dots_remaining - dots_per_level, dots_per_level, angle + 0.65, level + 1, ctx);
         }
-        for (var dot = 0; dot < Math.min(dots_remaining, dots_per_level); dot++) {
+        for (var dot = 1; dot <= Math.min(dots_remaining, dots_per_level); dot++) {
           var progression = Math.min(10, dots_remaining - dot);
           var nr = 255 - progression * r / 10;
           var ng = 255 - progression * g / 10;
@@ -75,8 +77,8 @@
           ctx.fillStyle = `rgb(${nr|0}, ${ng|0}, ${nb|0})`;
           ctx.beginPath();
           ctx.ellipse(
-            GU * (8 + x + dot / dots_per_level * Math.sin(angle)),
-            GU * (8.9 - y - dot / dots_per_level * Math.cos(angle)),
+            GU * (8 + x + dot / dots_per_level * dx * (1 +  Math.sin(dot / dots_per_level * Math.PI) * 0.3 * (level%2?1:-1))),
+            GU * (8.9 - y - dot / dots_per_level * dy) - GU,
             0.02 * GU,
             0.02 * GU,
             0, 0, Math.PI * 2);
@@ -86,7 +88,7 @@
         return;
       }
 
-      draw_branch(0, 0, this.dots, this.dots_per_level, 0, this.ctx);
+      draw_branch(0, 0, this.dots, this.dots_per_level, 0, 1, this.ctx);
 
       this.output.needsUpdate = true;
       this.outputs.render.setValue(this.output);
