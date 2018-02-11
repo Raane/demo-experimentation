@@ -11,7 +11,7 @@
     "type": "SceneSwitcherNode",
     "connected": {
       "A": "intro.render",
-      "B": "scanner.render",
+      "B": "scannerShader.render",
       "C": "SpinningCube.render"
     }
   },
@@ -22,6 +22,16 @@
   {
     "id": "intro",
     "type": "IntroNode"
+  },
+  {
+    "id": "scannerShader",
+    "type": "scannerShaderNode",
+    "options": {
+      "shader": "scannerShader"
+    },
+    "connected": {
+      "texture": "scanner.render"
+    }
   },
   {
     "id": "scanner",

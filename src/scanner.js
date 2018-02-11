@@ -4,15 +4,8 @@
       super(id, {
         camera: options.camera,
         outputs: {
-          render: new NIN.TextureOutput(),
-          depth: new NIN.TextureOutput()
+          render: new NIN.TextureOutput()
         }
-      });
-
-      this.depthRenderTarget = new THREE.WebGLRenderTarget(640, 360, {
-        minFilter: THREE.LinearFilter,
-        magFilter: THREE.LinearFilter,
-        format: THREE.RGBFormat
       });
 
       this.cube = new THREE.Mesh(new THREE.BoxGeometry(50, 5, 5),
@@ -23,7 +16,24 @@
       light.position.set(50, 50, 50);
       this.scene.add(light);
 
-      this.camera.position.z = 100;
+      this.camera2 = new THREE.PerspectiveCamera( 45, 16 / 9, 50, 150 );
+      this.camera2.position.z = 100;
+      console.log(this.camera2);
+
+      // Create a multi render target with Float buffers
+      /*this.target = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight );
+      this.target.texture.format = THREE.RGBFormat;
+      this.target.texture.minFilter = THREE.NearestFilter;
+      this.target.texture.magFilter = THREE.NearestFilter;
+      this.target.texture.generateMipmaps = false;
+      this.target.stencilBuffer = false;
+      this.target.depthBuffer = true;
+      this.target.depthTexture = new THREE.DepthTexture();
+      this.target.depthTexture.type = THREE.UnsignedShortType;*/
+
+      this.targetDepthTexture = new THREE.DepthTexture();
+
+      //this.render(demo.renderer);
     }
 
     update(frame) {
@@ -35,19 +45,10 @@
 
     render(renderer) {
       renderer.overrideMaterial = null;
-      renderer.render(this.scene, this.camera, this.renderTarget, true);
-      renderer.overrideMaterial = this.depthMaterial;
-      renderer.render(this.scene, this.camera, this.depthRenderTarget, true);
-      this.outputs.render.setValue(this.renderTarget.texture);
-      /*this.outputs.depthUniforms.setValue(this.depthUniforms);
-      this.depthUniforms.tDiffuse.value = this.renderTarget.texture;
-      this.depthUniforms.tDepth.value = this.depthRenderTarget.texture;
-      this.depthUniforms.size.value.set(16 * GU, 9 * GU);
-      this.depthUniforms.cameraNear.value = this.camera.near;
-      this.depthUniforms.cameraFar.value = this.camera.far;
-      this.depthUniforms.onlyAO.value = false;
-      this.depthUniforms.aoClamp.value = 0.5;
-      ths.depthUniforms.lumInfluence.value = 0.5;*/
+      this.renderTarget.depthTexture = this.targetDepthTexture;
+      this.renderTarget.depthTexture.type = THREE.UnsignedShortType;
+      renderer.render(this.scene, this.camera2, this.renderTarget, true);
+      this.outputs.render.setValue(this.renderTarget.depthTexture);
     }
   }
 
