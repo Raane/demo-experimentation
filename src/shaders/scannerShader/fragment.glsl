@@ -46,7 +46,12 @@ void main() {
   float distance_from_origin = distance(wsPos, origin);
 
   if (distance_from_origin < blastDistance && distance_from_origin > blastDistance - blastWidth) {
-    gl_FragColor.rgb = vec3((0.5 + sin(vUv.y * 4000.0) / 2.0));
+    float scanner_color = (1.0 + floor((0.5 + sin(vUv.y * 400.0) / 2.0) * 2.0)) / 2.0;
+    float scanner_intensity = (distance_from_origin - (blastDistance - blastWidth)) / blastWidth;
+    gl_FragColor.rgb = vec3(scanner_color * scanner_intensity + (1.0 - scanner_intensity) * diffuse.x,
+                            scanner_color * scanner_intensity + (1.0 - scanner_intensity) * diffuse.y,
+                            scanner_color * scanner_intensity + (1.0 - scanner_intensity) * diffuse.z
+                            ); 
   }
   else
   {

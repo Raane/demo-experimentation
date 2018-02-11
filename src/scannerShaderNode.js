@@ -13,7 +13,7 @@
       this.uniforms.tDepth.value = this.inputs.depth.getValue();
       this.uniforms.cameraNear.value = 50;
       this.uniforms.cameraFar.value = 150;
-      this.uniforms.blastDistance.value = frame % 150;
+      this.uniforms.blastDistance.value = frame % 350;
       this.uniforms.frame.value = frame;
     }
   }
