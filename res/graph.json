@@ -30,7 +30,8 @@
       "shader": "scannerShader"
     },
     "connected": {
-      "texture": "scanner.render"
+      "texture": "scanner.render",
+      "depth": "scanner.depth"
     }
   },
   {

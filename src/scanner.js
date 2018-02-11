@@ -4,7 +4,8 @@
       super(id, {
         camera: options.camera,
         outputs: {
-          render: new NIN.TextureOutput()
+          render: new NIN.TextureOutput(),
+          depth: new NIN.TextureOutput(),
         }
       });
 
@@ -18,22 +19,10 @@
 
       this.camera2 = new THREE.PerspectiveCamera( 45, 16 / 9, 50, 150 );
       this.camera2.position.z = 100;
-      console.log(this.camera2);
-
-      // Create a multi render target with Float buffers
-      /*this.target = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight );
-      this.target.texture.format = THREE.RGBFormat;
-      this.target.texture.minFilter = THREE.NearestFilter;
-      this.target.texture.magFilter = THREE.NearestFilter;
-      this.target.texture.generateMipmaps = false;
-      this.target.stencilBuffer = false;
-      this.target.depthBuffer = true;
-      this.target.depthTexture = new THREE.DepthTexture();
-      this.target.depthTexture.type = THREE.UnsignedShortType;*/
 
       this.targetDepthTexture = new THREE.DepthTexture();
-
-      //this.render(demo.renderer);
+      this.renderTarget.depthTexture = this.targetDepthTexture;
+      this.renderTarget.depthTexture.type = THREE.UnsignedShortType;
     }
 
     update(frame) {
@@ -44,11 +33,9 @@
     }
 
     render(renderer) {
-      renderer.overrideMaterial = null;
-      this.renderTarget.depthTexture = this.targetDepthTexture;
-      this.renderTarget.depthTexture.type = THREE.UnsignedShortType;
       renderer.render(this.scene, this.camera2, this.renderTarget, true);
-      this.outputs.render.setValue(this.renderTarget.depthTexture);
+      this.outputs.render.setValue(this.renderTarget.texture);
+      this.outputs.depth.setValue(this.renderTarget.depthTexture);
     }
   }
 
