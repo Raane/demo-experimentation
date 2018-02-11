@@ -18,6 +18,11 @@
 
       this.camera.position.z = 100;
 
+      this.bg = new THREE.Mesh(new THREE.BoxGeometry(221, 124, 0.0001),
+                                 new THREE.MeshBasicMaterial({ color: 0x666666 })); // A background of max size ish. Useful to know how large that would be :)
+      this.bg.position.z = -49; // just within the cameras view
+      this.scene.add(this.bg);
+
       for (var i = 0; i < 10; i++)
       {
         for (var j = 0; j < 10; j++)
