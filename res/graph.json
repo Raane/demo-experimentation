@@ -12,7 +12,8 @@
     "connected": {
       "A": "intro.render",
       "B": "scannerShader.render",
-      "C": "SpinningCube.render"
+      "C": "ZentangleVisionShader.render",
+      "D": "SpinningCube.render"
     }
   },
   {
@@ -37,5 +38,19 @@
   {
     "id": "scanner",
     "type": "scanner"
+  },
+  {
+    "id": "ZentangleVision",
+    "type": "zentangleVision"
+  },
+  {
+    "id": "ZentangleVisionShader",
+    "type": "ZentangleVisionShaderNode",
+    "options": {
+      "shader": "ZentangleVisionShader"
+    },
+    "connected": {
+      "texture": "ZentangleVision.render"
+    }
   }
 ]
