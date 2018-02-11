@@ -10,16 +10,29 @@
       });
 
       this.cube = new THREE.Mesh(new THREE.BoxGeometry(50, 5, 5),
-                                 new THREE.MeshBasicMaterial({ color: 0x000fff }));
+                                 new THREE.MeshPhongMaterial({ color: 0x000fff }));
       this.scene.add(this.cube);
 
       this.cube2 = new THREE.Mesh(new THREE.BoxGeometry(221, 124, 0.0001),
-                                 new THREE.MeshBasicMaterial({ color: 0x666666 })); // A background of max size ish. Useful to know how large that would be :)
-      //this.scene.add(this.cube2);
+                                 new THREE.MeshPhongMaterial({ color: 0x666666 })); // A background of max size ish. Useful to know how large that would be :)
+      this.scene.add(this.cube2);
 
-      this.cube2.position.z = -49.99999; // just within the cameras view
+      for (var i = 0; i < 30; i++)
+      {
+        for (var j = 0; j < 30; j++)
+        {
+          var cube = new THREE.Mesh(new THREE.BoxGeometry(3, 3, 3),
+                                     new THREE.MeshPhongMaterial({ color: 0x000fff }));
+          cube.position.x = - 60 + i * 4;
+          cube.position.z = - 60 + j * 4;
+          cube.position.y = Math.random() * 3 - 20;
+          this.scene.add(cube);
+        }
+      }
 
-      var light = new THREE.PointLight(0xffffff, 1, 100);
+      this.cube2.position.z = -49; // just within the cameras view
+
+      var light = new THREE.PointLight(0xffffff, 1, 200);
       light.position.set(50, 50, 50);
       this.scene.add(light);
 

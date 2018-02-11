@@ -3,19 +3,26 @@ uniform sampler2D tDiffuse;
 uniform sampler2D tDepth;
 uniform float cameraNear;
 uniform float cameraFar;
+uniform float blastDistance;
 
 #define camera_x 0.
 #define camera_y 0.
 #define camera_z -100.
 #define origin_x 0.
 #define origin_y 0.
-#define origin_z 0.
+#define origin_z -15.
+#define blastWidth 10.
 // This is the base used to calculate the cameras edges. 
 // A camera with a far plane at 1 with an aspect ratio of
 // 16/9 will have the vertical edge at (1,1.4733).
 #define angle_unit_x 1.4733 
 #define aspect_ratio (16.0 / 9.0)
 
+
+/*float horizBars(float y)
+{
+  return 0.5 + sin(y * 10) / 2.0;
+} */
 
 void main() {
   vec3 diffuse = texture2D(tDiffuse, vUv).rgb;
@@ -38,12 +45,12 @@ void main() {
 
   float distance_from_origin = distance(wsPos, origin);
 
-  if (distance_from_origin < 20.0 && distance_from_origin > 10.0) {
-    gl_FragColor.rgb = vec3(1.0, 0.0, 0.0);
+  if (distance_from_origin < blastDistance && distance_from_origin > blastDistance - blastWidth) {
+    gl_FragColor.rgb = vec3((0.5 + sin(vUv.y * 4000.0) / 2.0));
   }
   else
   {
-    gl_FragColor.rgb = vec3(depth);
+    gl_FragColor.rgb = diffuse;
   }
   gl_FragColor.a = 1.0;
 }

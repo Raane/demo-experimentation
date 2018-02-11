@@ -11,8 +11,9 @@
     update(frame) {
       this.uniforms.tDiffuse.value = this.inputs.texture.getValue();
       this.uniforms.tDepth.value = this.inputs.depth.getValue();
-      this.uniforms.cameraNear.value = 0.1;
+      this.uniforms.cameraNear.value = 50;
       this.uniforms.cameraFar.value = 150;
+      this.uniforms.blastDistance.value = frame % 150;
       this.uniforms.frame.value = frame;
     }
   }
