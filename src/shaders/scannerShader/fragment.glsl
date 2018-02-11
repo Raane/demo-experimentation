@@ -14,18 +14,19 @@ uniform float cameraFar;
 // A camera with a far plane at 1 with an aspect ratio of
 // 16/9 will have the vertical edge at (1,1.4733).
 #define angle_unit_x 1.4733 
+#define aspect_ratio (16.0 / 9.0)
 
 
 void main() {
   vec3 diffuse = texture2D(tDiffuse, vUv).rgb;
   float depth = texture2D(tDepth, vUv).x;
 
-  float linear_depth = depth; // For now near is so close to the camera that this will do. Should be calculated more exact.
+  float linear_depth = depth * ((cameraFar - cameraNear) + cameraNear) / cameraFar; // For now near is so close to the camera that this will do. Should be calculated more exact.
 
   // Vector from camera to pixel
-  vec3 wsDir = vec3(   (vUv.x - 0.5) * 2.0 * angle_unit_x * 150.0,
-                        (vUv.y - 0.5) * 2.0 * angle_unit_x / 16.0 * 9.0 * 150.0,
-                        150.0
+  vec3 wsDir = vec3(   (vUv.x - 0.5) * 2.0 * angle_unit_x * cameraFar,
+                        (vUv.y - 0.5) * 2.0 * angle_unit_x / aspect_ratio * cameraFar,
+                        cameraFar
                     );
 
   vec3 camera_pos = vec3(camera_x, camera_y, camera_z);
@@ -37,7 +38,7 @@ void main() {
 
   float distance_from_origin = distance(wsPos, origin);
 
-  if (distance_from_origin < 10.0) {
+  if (distance_from_origin < 20.0 && distance_from_origin > 10.0) {
     gl_FragColor.rgb = vec3(1.0, 0.0, 0.0);
   }
   else
